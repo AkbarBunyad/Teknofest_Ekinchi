@@ -7,6 +7,7 @@ from .process_soil_moisture import (
     ANGLE, 
     K, 
     load_geojson,
-    format_spec
+    format_spec,
+    get_hectares
     )
 from .predict import predict_soil_moisture

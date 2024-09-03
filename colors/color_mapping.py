@@ -8,19 +8,19 @@ def transform2rgb(sm: np.ndarray):
     sm_map = sm.copy()
 
     # Red
-    indexes_0, indexes_1, _ = np.where(sm <= .1)
+    indexes_0, indexes_1, _ = np.where(sm <= .3)
     sm_map[indexes_0, indexes_1] = (255, 0, 0)
 
     # Yellow
-    indexes_0, indexes_1, _ = np.where((sm > .1) & (sm <= .2))
+    indexes_0, indexes_1, _ = np.where((sm > .3) & (sm <= .5))
     sm_map[indexes_0, indexes_1] = (255, 255, 0)
 
     # Green
-    indexes_0, indexes_1, _ = np.where((sm > .2) & (sm <= .3))
+    indexes_0, indexes_1, _ = np.where((sm > .5) & (sm <= .8))
     sm_map[indexes_0, indexes_1] = (0, 255, 0)
 
     # Blue
-    indexes_0, indexes_1, _ = np.where(sm > .3)
+    indexes_0, indexes_1, _ = np.where(sm > .8)
     sm_map[indexes_0, indexes_1] = (0, 0, 255)
     
     return sm_map.transpose([2, 0, 1])

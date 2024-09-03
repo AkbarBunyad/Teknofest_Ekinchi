@@ -20,6 +20,8 @@ def predict_soil_moisture(model, temperature: List, precipitation: List) -> np.n
 
     model.eval()
     with torch.no_grad():
-        soil_moisture_change = model(sample_scaled).numpy()
-    
+        # soil_moisture_change = model(sample_scaled).numpy()
+        soil_moisture_change = np.array(
+            model(sample_scaled)
+        )
     return soil_moisture_change

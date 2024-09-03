@@ -85,7 +85,7 @@ def format_spec(spec: np.ndarray, sm_map: np.ndarray, poly: Polygon, src: raster
 
     return spec
 
-def get_water_required(soil_moisture_map: np.ndarray, indexes: np.ndarray, soil_density: float = 1280) -> float:
+def get_water_required(soil_moisture_map: np.ndarray, indexes: np.ndarray, soil_density: float = 1040) -> float:
     """Water requirement estimation"""
     soil_volume = 10 * 10 * 0.1 # m^3
     soil_mass = soil_density * soil_volume
@@ -100,10 +100,33 @@ def get_water_required(soil_moisture_map: np.ndarray, indexes: np.ndarray, soil_
     
     return float(water_required_total), float(water_required_per)
 
-def update_map(soil_moisture_map: np.ndarray, soil_moisture_change: float, threshold_min: float = 0.05, threshold_max: float = 0.5) -> np.ndarray:
+def update_map(soil_moisture_map: np.ndarray, soil_moisture_change: float, threshold_min: float = 0.2, threshold_max: float = 0.8) -> np.ndarray:
     """Estimate potential changes based on the weather forecasting"""
     soil_moisture_map = soil_moisture_map + soil_moisture_change
     soil_moisture_map[soil_moisture_map < threshold_min] = threshold_min
     soil_moisture_map[soil_moisture_map > threshold_max] = threshold_max
     return soil_moisture_map
+
+def get_hectares(soil_moisture_map: np.ndarray, poly: Polygon, src: rasterio.io.DatasetReader):
+
+    if soil_moisture_map.ndim == 3:
+        soil_moisture_map = soil_moisture_map[0]
+
+    height, width = soil_moisture_map.shape
+
+    cols, rows = np.meshgrid(np.arange(width), np.arange(height))
+    xs, ys = rasterio.transform.xy(src.transform, rows, cols)
     
+    lons = np.array(xs)
+    lats = np.array(ys)
+
+    lons = lons.reshape(-1)
+    lats = lats.reshape(-1)
+
+    index_count = 0
+    for i in range(lons.size):
+        point = Point([lons[i], lats[i]])
+        if point.within(poly):
+            index_count += 1
+    
+    return index_count * 100 / 10 ** 4
