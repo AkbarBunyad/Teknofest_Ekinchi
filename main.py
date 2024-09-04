@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from shapely import Point, Polygon
 import rasterio
+import geopandas as gpd
 import torch
 
 from models import dubois, SoilMoisturePredictor
@@ -160,28 +161,14 @@ class Processor():
         lons = lons.reshape(-1)
         lats = lats.reshape(-1)
 
-        indexes = []
-        for i in range(lats.size):
-            point = Point([lons[i], lats[i]])
-            if point.within(poly):
-                indexes.append(i)
-        return np.array(indexes)
+        points = gpd.points_from_xy(lons, lats)
+        indexes = np.where(points.within(poly))[0]
+        return indexes
 
 if __name__ == '__main__':
     
     # Create a processor for all the fields
     processor = Processor(device='cpu')
-
-    # sm, _ = processor.get_sm()
-    # print(sm.min())
-    # print(sm.max())
-
-    # import seaborn as sns
-    # sns.displot(sm.reshape(-1))
-    # plt.show()
-
-    # import sys
-    # sys.exit()
 
     # Provide field_id between 1 and 4
     processor.update_field_id(field_id=4)

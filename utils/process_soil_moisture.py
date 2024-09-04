@@ -9,6 +9,7 @@ import rasterio
 import geojson
 from shapely import Polygon, Point
 from skimage.exposure import equalize_hist
+import geopandas as gpd
 
 ANGLE = 65 * np.pi / 180
 K = 1
@@ -107,7 +108,7 @@ def update_map(soil_moisture_map: np.ndarray, soil_moisture_change: float, thres
     soil_moisture_map[soil_moisture_map > threshold_max] = threshold_max
     return soil_moisture_map
 
-def get_hectares(soil_moisture_map: np.ndarray, poly: Polygon, src: rasterio.io.DatasetReader):
+def get_hectares(soil_moisture_map: np.ndarray, poly: Polygon, src: rasterio.io.DatasetReader) -> float:
 
     if soil_moisture_map.ndim == 3:
         soil_moisture_map = soil_moisture_map[0]
@@ -122,11 +123,8 @@ def get_hectares(soil_moisture_map: np.ndarray, poly: Polygon, src: rasterio.io.
 
     lons = lons.reshape(-1)
     lats = lats.reshape(-1)
-
-    index_count = 0
-    for i in range(lons.size):
-        point = Point([lons[i], lats[i]])
-        if point.within(poly):
-            index_count += 1
     
-    return index_count * 100 / 10 ** 4
+    points = gpd.points_from_xy(lons, lats)
+    conds = points.within(poly)
+
+    return conds.sum() * 100 / 10 ** 4
