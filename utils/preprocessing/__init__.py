@@ -1,3 +1,4 @@
+from .preprocessing import free_outliers, min_max_scale, calibrate
 from .process_weather import get_weather_forecast
 from .process_soil_moisture import (
     get_water_required, 
@@ -10,4 +11,3 @@ from .process_soil_moisture import (
     format_spec,
     get_hectares
     )
-from .predict import predict_soil_moisture

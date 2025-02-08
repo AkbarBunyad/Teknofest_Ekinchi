@@ -23,7 +23,7 @@ def retrieve_sm(sp: float):
     sm = -5.3 * 10 ** -2 + 2.92 * 10 ** -2 * sp - 5.5 * 10 ** -4 * sp ** 2 + 4.3 * 10 ** -6 * sp ** 3
     return sm
 
-def dubois(vv, vh, angle, wave_length=5.625, eps=1e-16):
+def dubois(vv, vh, angle=1.1344640137963142, wave_length=5.625, eps=1e-16):
 
     # Converting into decibels
     vv_decibel = 10 * np.log10(vv + .001)

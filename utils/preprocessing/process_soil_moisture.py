@@ -3,8 +3,7 @@ sys.path.append('../')
 
 import numpy as np
 import os
-from models import dubois
-from preprocessing import free_outliers, min_max_scale, calibrate
+from .preprocessing import free_outliers, min_max_scale, calibrate
 import rasterio
 import geojson
 from shapely import Polygon, Point

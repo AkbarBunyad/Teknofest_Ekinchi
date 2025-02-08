@@ -194,3 +194,7 @@ if __name__ == '__main__':
     water_totals, water_pers = processor.see_future()
     print('water total:', water_totals)
     print('water per:', water_pers)
+
+    print()
+    print(insights['Problems'])
+    print(insights['Hectare'])

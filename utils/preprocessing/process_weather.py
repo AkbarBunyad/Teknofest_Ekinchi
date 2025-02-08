@@ -12,8 +12,8 @@ def load_weather_data(filepath: str) -> pd.DataFrame:
 def get_current_datetime() -> datetime.date:
     return datetime.now().date()
 
-def get_weather_forecast(field_id: int, days=5) -> Tuple[List[str], List[float], List[float]]:
-    filepath = os.path.join(ROOT, str(field_id), 'weather', 'weather.csv')
+def get_weather_forecast(field_id: int, root: str = ROOT, days: int = 5) -> Tuple[List[str], List[float], List[float]]:
+    filepath = os.path.join(root, str(field_id), 'weather', 'weather.csv')
     df = load_weather_data(filepath)
     
     date = get_current_datetime()
