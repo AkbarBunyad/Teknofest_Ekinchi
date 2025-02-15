@@ -27,7 +27,6 @@ def get_weather_forecast(field_id: int, root: str = ROOT, days: int = 5) -> Tupl
     df = df.loc[((~cond_1 & cond_2) | (cond_1 & cond_3))]
 
     sample = df.iloc[:days]
-    # sample.loc[:, 'validTimeUtc'] = sample['validTimeUtc'].astype(str)
     sample['validTimeUtc'] = sample['validTimeUtc'].astype(str)
 
     date_time = sample['validTimeUtc'].tolist()

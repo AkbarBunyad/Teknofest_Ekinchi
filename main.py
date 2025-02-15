@@ -10,20 +10,24 @@ import geopandas as gpd
 import torch
 
 from models import dubois, SoilMoisturePredictor
-from utils import (
-    ANGLE,
-    get_weather_forecast, 
+from utils.postprocessing import (
     predict_soil_moisture, 
-    get_field_sar,
-    get_field_spec,
-    get_water_required,
-    update_map,
-    format_spec,
-    load_geojson,
-    get_hectares)
-from colors import transform2rgb, convert2image
-from preprocessing import free_outliers
-
+    transform2rgb, 
+    convert2image
+    )
+from utils.preprocessing import (
+    free_outliers, 
+    get_weather_forecast, 
+    get_water_required, 
+    update_map, 
+    get_field_sar, 
+    get_field_spec, 
+    ANGLE, 
+    K, 
+    load_geojson, 
+    format_spec, 
+    get_hectares
+)
 
 MODEL_PATH = './saved_models/model_cpu.pt'
 PATH_IMAGE_DESCRIPTION = './data/sentinel_data/fields'

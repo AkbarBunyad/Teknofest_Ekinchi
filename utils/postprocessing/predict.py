@@ -1,11 +1,8 @@
 import warnings
 warnings.filterwarnings('ignore')
-
 import numpy as np
 import torch
-from ...models import SoilMoisturePredictor
 from typing import List
-
 
 def predict_soil_moisture(model, temperature: List, precipitation: List) -> np.ndarray:
     sample = torch.tensor([temperature, precipitation]).to(torch.float32).T
