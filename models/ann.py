@@ -15,3 +15,6 @@ class SoilMoisturePredictor(nn.Module):
         x = self.relu(self.linear_3(x))
         x = self.linear_4(x)
         return x
+    
+    def predict(self, x):
+        return self.forward(x)
