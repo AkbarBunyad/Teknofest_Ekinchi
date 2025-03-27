@@ -7,7 +7,6 @@ import numpy as np
 from shapely import Point, Polygon
 import rasterio
 import geopandas as gpd
-import torch
 
 from models import dubois, SoilMoisturePredictor
 from utils.postprocessing import (
@@ -29,25 +28,13 @@ from utils.preprocessing import (
     get_hectares
 )
 
-MODEL_PATH = './saved_models/model_cpu.pt'
+MODEL_PATH = './saved_models/model_weights.json'
 PATH_IMAGE_DESCRIPTION = './data/sentinel_data/fields'
 
-def load_model(model_path: str = MODEL_PATH):
-    """Load Soil Moisture Predictor"""
-
-    if model_path is None:
-        model_path = MODEL_PATH
-
-    checkpoints = torch.load(model_path)
-    model = SoilMoisturePredictor()
-    model.load_state_dict(checkpoints)
-
-    return model
-
 class Processor():
-    def __init__(self, field_id: int = 1, device: str = 'cpu'):
+    def __init__(self, field_id: int = 1):
         self.field_id = field_id
-        self.model = load_model().to(device)
+        self.model = SoilMoisturePredictor(MODEL_PATH)
         self.path_image_description = PATH_IMAGE_DESCRIPTION
 
     def update_field_id(self, field_id: int):
@@ -172,7 +159,7 @@ class Processor():
 if __name__ == '__main__':
     
     # Create a processor for all the fields
-    processor = Processor(device='cpu')
+    processor = Processor()
 
     # Provide field_id between 1 and 4
     processor.update_field_id(field_id=4)
@@ -202,3 +189,4 @@ if __name__ == '__main__':
     print()
     print(insights['Problems'])
     print(insights['Hectare'])
+

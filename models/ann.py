@@ -17,6 +17,9 @@ class SoilMoisturePredictor:
         self.linear_4_weight = np.array(weights['linear_4.weight'])  # (1, 16)
         self.linear_4_bias = np.array(weights['linear_4.bias'])      # (1,)
 
+    def __call__(self, x):
+        return self.forward(x)
+
     def relu(self, x):
         """ReLU activation function"""
         return np.maximum(0, x)
